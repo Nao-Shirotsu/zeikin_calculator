@@ -13,9 +13,26 @@ def calc_format_width(str):
             format_width -= 1
     return format_width
 
-def get_formatted_str(tagstr, intval):
-    format_width = calc_format_width(tagstr)
-    return '{:<{width}}'.format(tagstr, width=format_width) + ' =' + '{:>{width}}'.format(intval, width=FORMAT_WIDTH_NUMBERS)
+# 文字列の幅を計算 (日本語文字は2,それ以外は1)
+def calc_width_str(str):
+    width = 0
+    for letter in str:
+        if unicodedata.east_asian_width(letter) in "FWA":
+            width += 2
+        else:
+            width += 1
+    return width
+
+def get_html_formatted_str(tagstr, intval):
+    out_str = tagstr
+    str_width = calc_width_str(tagstr)
+    for i in range(FORMAT_WIDTH_LETTERS - str_width):
+        out_str += '&nbsp;'
+    out_str += '&nbsp;=&nbsp;'
+    for i in range(FORMAT_WIDTH_NUMBERS - len(str(intval))):
+        out_str += '&nbsp;'
+    out_str += str(intval)
+    return  out_str
 
 def print_tagstr_format(tagstr, intval):
     format_width = calc_format_width(tagstr)
@@ -214,6 +231,9 @@ def process_zeikin(gakumen):
 def wrap_html_p(str):
     return '<p>' + str + '</p>'
 
+def wrap_htmp_tt(str):
+    return '<tt>' + str + '</tt>'
+
 def generate_tedori_result_str(gakumen, kenkou_rate, kintouwari):
     out_str = ''
 
@@ -222,13 +242,11 @@ def generate_tedori_result_str(gakumen, kenkou_rate, kintouwari):
     kouseinenkin = calc_kouseinenkin(gakumen)
     kyuyoshotoku = calc_kyuyoshotoku(gakumen)
 
-    out_str += wrap_html_p(get_formatted_str("額面(年収)", gakumen))
-    out_str += wrap_html_p(get_formatted_str("給与所得", kyuyoshotoku))
-    out_str += wrap_html_p(get_formatted_str("健康保険料", kenkouhoken))
-    out_str += wrap_html_p(get_formatted_str("雇用保険料", koyouhoken))
-    out_str += wrap_html_p(get_formatted_str("厚生年金保険料", kouseinenkin))
-    
-    print(out_str)
+    out_str += wrap_html_p(wrap_htmp_tt(get_html_formatted_str("額面(年収)", gakumen)))
+    out_str += wrap_html_p(wrap_htmp_tt(get_html_formatted_str("給与所得", kyuyoshotoku)))
+    out_str += wrap_html_p(wrap_htmp_tt(get_html_formatted_str("健康保険料", kenkouhoken)))
+    out_str += wrap_html_p(wrap_htmp_tt(get_html_formatted_str("雇用保険料", koyouhoken)))
+    out_str += wrap_html_p(wrap_htmp_tt(get_html_formatted_str("厚生年金保険料", kouseinenkin)))
 
     return out_str
 
