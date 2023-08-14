@@ -5,11 +5,20 @@ from distutils.util import strtobool
 FORMAT_WIDTH_LETTERS = 18 # 数は適当
 FORMAT_WIDTH_NUMBERS = 8 # 数は適当
 
-def print_tagstr_format(tagstr, intval):
+# 文字列フォーマットの幅から日本語幅ぶんの差を含めた値を計算
+def calc_format_width(str):
     format_width = FORMAT_WIDTH_LETTERS # 数は適当
-    for letter in tagstr:
+    for letter in str:
         if unicodedata.east_asian_width(letter) in "FWA":
             format_width -= 1
+    return format_width
+
+def get_formatted_str(tagstr, intval):
+    format_width = calc_format_width(tagstr)
+    return '{:<{width}}'.format(tagstr, width=format_width) + ' =' + '{:>{width}}'.format(intval, width=FORMAT_WIDTH_NUMBERS)
+
+def print_tagstr_format(tagstr, intval):
+    format_width = calc_format_width(tagstr)
     print('{:<{width}}'.format(tagstr, width=format_width), ' =',  '{:>{width}}'.format(intval, width=FORMAT_WIDTH_NUMBERS))
 
 def print_yellow(str, intval):
@@ -201,7 +210,87 @@ def process_zeikin(gakumen):
     print_red("引かれる額合計", sum_minus)
     print_red("手取り", tedori)
 
+# 文字列をhtmlの<p>で包んで返す
+def wrap_html_p(str):
+    return '<p>' + str + '</p>'
 
+def generate_tedori_result_str(gakumen, kenkou_rate, kintouwari):
+    out_str = ''
+
+    kenkouhoken = calc_kenkouhoken(gakumen, kenkou_rate)
+    koyouhoken = calc_koyouhoken(gakumen)
+    kouseinenkin = calc_kouseinenkin(gakumen)
+    kyuyoshotoku = calc_kyuyoshotoku(gakumen)
+
+    out_str += wrap_html_p(get_formatted_str("額面(年収)", gakumen))
+    out_str += wrap_html_p(get_formatted_str("給与所得", kyuyoshotoku))
+    out_str += wrap_html_p(get_formatted_str("健康保険料", kenkouhoken))
+    out_str += wrap_html_p(get_formatted_str("雇用保険料", koyouhoken))
+    out_str += wrap_html_p(get_formatted_str("厚生年金保険料", kouseinenkin))
+    
+    print(out_str)
+
+    return out_str
+
+    # koujo_shotokuzei = {}
+    # koujo_shotokuzei['基礎'] = 480000
+    # koujo_shotokuzei['配偶者']   = 0
+    # koujo_shotokuzei['扶養']     = 0
+    # koujo_shotokuzei['ひとり親'] = 0
+    # koujo_shotokuzei['障害者']   = 0
+    # koujo_shotokuzei['生命保険'] = 0
+    # koujo_shotokuzei['その他']   = 0
+    # koujo_shotokuzei['健康保険'] = kenkouhoken
+    # koujo_shotokuzei['年金'] = kouseinenkin
+    # koujo_shotokuzei['雇用保険'] = koyouhoken
+
+    # koujo_juminzei = {}
+    # koujo_juminzei['基礎'] = 430000
+    # koujo_juminzei['配偶者']   = 0
+    # koujo_juminzei['扶養']     = 0
+    # koujo_juminzei['ひとり親'] = 0
+    # koujo_juminzei['障害者']   = 0
+    # koujo_juminzei['生命保険'] = 0
+    # koujo_juminzei['その他']   = 0
+    # koujo_juminzei['健康保険'] = kenkouhoken
+    # koujo_juminzei['年金'] = kouseinenkin
+    # koujo_juminzei['雇用保険'] = koyouhoken
+    # koujo_juminzei['調整'] = 0
+
+    # shotokuzei = calc_shotokuzei(kyuyoshotoku, koujo_shotokuzei)
+    # juminzei = calc_juminzei(kyuyoshotoku, koujo_juminzei, kintouwari)
+
+    # #print_yellow("健康保険料", kenkouhoken)
+    # #print_yellow("雇用保険料", koyouhoken)
+    # #print_yellow("厚生年金料", kouseinenkin)
+
+    # print('~~~~~~~~~~~~所得税の控除内訳~~~~~~~~~~~~')
+    # sum_koujo_shotoku = 0
+    # for k in koujo_shotokuzei:
+    #     sum_koujo_shotoku += koujo_shotokuzei[k]
+    #     print_tagstr_format(k + '控除', koujo_shotokuzei[k])
+    # print_tagstr_format("   -> 控除額合計", sum_koujo_shotoku)
+    # print_tagstr_format("   -> 課税所得", calc_kazeishotoku_shotokuzei(kyuyoshotoku, koujo_shotokuzei))
+    # print('~~~~~~~~~~~~住民税の控除内訳~~~~~~~~~~~~')
+    # sum_koujo_jumin = 0
+    # for k in koujo_shotokuzei:
+    #     sum_koujo_jumin += koujo_juminzei[k]
+    #     print_tagstr_format(k + '控除', koujo_juminzei[k])
+    # print_tagstr_format("   -> 控除額合計", sum_koujo_jumin)
+    # print_tagstr_format("   -> 課税標準額", calc_kazeishotoku_juminzei(kyuyoshotoku, koujo_juminzei))
+    # print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+    # print_yellow("所得税", shotokuzei)
+    # print_yellow("住民税", juminzei)
+    # print_yellow("健康保険料", kenkouhoken)
+    # print_yellow("雇用保険料", koyouhoken)
+    # print_yellow("厚生年金保険料", kouseinenkin)
+    # sum_minus = shotokuzei + juminzei + kenkouhoken + koyouhoken + kouseinenkin
+    # print_red("   -> 税金社保合計", sum_minus)
+    # print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+    # tedori = gakumen - sum_minus
+    # print_tagstr_format("年収(額面)", gakumen)
+    # print_red("引かれる額合計", sum_minus)
+    # print_red("手取り", tedori)
 # ------------------ main ---------------------------
 #gakumen = int(inputlf("年収(額面) = "))
 #process_zeikin(gakumen)
