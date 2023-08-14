@@ -203,5 +203,5 @@ def process_zeikin(gakumen):
 
 
 # ------------------ main ---------------------------
-gakumen = int(inputlf("年収(額面) = "))
-process_zeikin(gakumen)
+#gakumen = int(inputlf("年収(額面) = "))
+#process_zeikin(gakumen)
