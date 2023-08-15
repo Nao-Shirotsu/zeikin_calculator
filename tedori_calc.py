@@ -122,7 +122,7 @@ def calc_kazeishotoku_juminzei(kyuyoshotoku, koujo_list):
     kazeishotoku = kyuyoshotoku
     for k in koujo_list:
         kazeishotoku -= koujo_list[k]
-    return int(kazeishotoku)
+    return max(kazeishotoku, 0)
 
 def calc_shotokuzei(kyuyoshotoku, koujo_list):
     kazeishotoku  = calc_kazeishotoku_shotokuzei(kyuyoshotoku, koujo_list)
