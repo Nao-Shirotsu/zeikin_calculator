@@ -33,6 +33,7 @@ def get_html_formatted_str(tagstr, intval):
     for i in range(FORMAT_WIDTH_NUMBERS - len(str(intval))):
         out_str += '&nbsp;'
     out_str += str(intval)
+    out_str += ' 円'
     return  out_str
 
 def print_tagstr_format(tagstr, intval):
@@ -308,7 +309,7 @@ def generate_tedori_result_str(gakumen, kenkou_rate, kintouwari):
     out_str += html_formatted_line_str('')
     out_str += html_formatted_line_str('------------住民税の控除内訳------------')
     sum_koujo_jumin = 0
-    for k in koujo_shotokuzei:
+    for k in koujo_juminzei:
         sum_koujo_jumin += koujo_juminzei[k]
         out_str += html_formatted_line(k + '控除', koujo_juminzei[k])
     out_str += html_formatted_line("   -> 控除額合計", sum_koujo_jumin)
