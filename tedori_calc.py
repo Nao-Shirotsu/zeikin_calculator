@@ -153,7 +153,6 @@ def calc_chouseikoujo(kyuyoshotoku, koujo_list_shotokuzei, koujo_list_juminzei):
     sum_diff = 0
     for koujokey in koujo_list_shotokuzei:
         sum_diff += abs(koujo_list_shotokuzei[koujokey] - koujo_list_juminzei[koujokey])
-
     if kazeishotoku <= 2000000:
         return min(sum_diff, kazeishotoku) * 0.05
     else:
@@ -282,7 +281,8 @@ def generate_tedori_result_str(gakumen, kenkou_rate, kintouwari):
     koujo_juminzei['健康保険'] = kenkouhoken
     koujo_juminzei['年金'] = kouseinenkin
     koujo_juminzei['雇用保険'] = koyouhoken
-    koujo_juminzei['調整'] = 0
+    
+    koujo_juminzei['調整'] = int(calc_chouseikoujo(kyuyoshotoku, koujo_shotokuzei, koujo_juminzei))
 
     shotokuzei = calc_shotokuzei(kyuyoshotoku, koujo_shotokuzei)
     juminzei = calc_juminzei(kyuyoshotoku, koujo_juminzei, kintouwari)
