@@ -4,18 +4,34 @@ by <a href="https://twitter.com/4rotsugd">Shirotsu</a>
 <p>↓ 計算に必要な項目を入力してください ↓</p>
 <p></p>
 <form action="" method="post">
-  <div class="tedori_param">
-    <label for="gakumen">額面(年収) = </label>
-    <input type="text" name="gakumen" id="gakumen" required/>
-  </div>
-  <div class="tedori_param">
-    <label for="kintouwari">今年の1月1日に住民票があった市の均等割額 = </label>
-    <input type="text" name="kintouwari" id="kintouwari" required/>
-  </div>
-  <div class="tedori_param">
-    <label for="kenkou_rate">加入している健康保険の被保険者負担率(x/1000 の x を入力) = </label>
-    <input type="text" name="kenkou_rate" id="kenkou_rate" required/>
-  </div>
+  <fieldset>
+    <legend>額面(年収)</legend>
+    <div class="tedori_param">
+      <label for="gakumen">額面(年収) : </label>
+      <input type="text" name="gakumen" id="gakumen" required/>
+    </div>
+  </fieldset>
+  <fieldset>
+    <legend>今年の1月1日に住民票があった市の均等割額</legend>
+    <div class="tedori_param">
+      <label for="kintouwari">均等割額 : </label>
+      <input type="text" name="kintouwari" id="kintouwari" required/>
+    </div>
+  </fieldset>
+  <fieldset>
+    <legend>健康保険の被保険者負担率</legend>
+    <div>
+      自分が加入している健康保険組合の保険料率を調べ、x/1000のxの部分を入力してください。
+    </div>
+    <div class="tedori_param">
+      <label for="kenkou_rate">一般(‰) : </label>
+      <input type="text" name="kenkou_rate_ippan" id="kenkou_rate_ippan" required/>
+    </div>
+    <div class="tedori_param"></div>
+      <label for="kenkou_rate">介護(‰) : </label>
+      <input type="text" name="kenkou_rate_kaigo" id="kenkou_rate_kaigo" required/>
+    </div>
+  </fieldset>
   <div class="tedori_param">
     <input type="submit" value="計算" />
   </div>
