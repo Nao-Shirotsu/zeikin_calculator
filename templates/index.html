@@ -54,5 +54,14 @@ by <a href="https://twitter.com/4rotsugd">Shirotsu</a>
   </fieldset>
   <div class="tedori_param">
     <input type="submit" value="計算" />
+    <audio autoplay id="myAudio" src="{{ url_for('static', filename='play.mp3') }}" type="audio/mpeg">
+      再生を許可してください。
+    </audio>
   </div>
+  <script>
+   function playSound(){
+     var sound = document.getElementById("myAudio");
+     sound.play();
+   }
+  </script>
 </form>
