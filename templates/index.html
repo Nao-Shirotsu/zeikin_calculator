@@ -32,6 +32,26 @@ by <a href="https://twitter.com/4rotsugd">Shirotsu</a>
       <input type="text" name="kenkou_rate_kaigo" id="kenkou_rate_kaigo" required/>
     </div>
   </fieldset>
+  <fieldset>
+    <legend>配偶者控除</legend>
+    <div>
+      納税者(あなた)、配偶者の年収に応じて配偶者特別控除も含んで計算します。
+    </div>
+    <div>
+      配偶者はいますか？
+    </div>
+    <div>
+      <input type="radio" id="haigusha_choice1" name="haigusha" value="yes" required/>
+      <label for="haigusha_choice1">います</label>
+
+      <input type="radio" id="haigusha_choice2" name="haigusha" value="no" />
+      <label for="haigusha_choice2">いません</label>
+    </div>
+    <div class="tedori_param">
+      <label for="haigusha_gakumen">配偶者の年収 : </label>
+      <input type="text" name="haigusha_gakumen" id="haigusha_gakumen" value="0"/>
+    </div>
+  </fieldset>
   <div class="tedori_param">
     <input type="submit" value="計算" />
   </div>

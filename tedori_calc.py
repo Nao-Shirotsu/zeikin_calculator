@@ -158,75 +158,167 @@ def calc_chouseikoujo(kyuyoshotoku, koujo_list_shotokuzei, koujo_list_juminzei):
     else:
         return max((sum_diff - (kazeishotoku - 2000000)) * 0.05, 2500)
 
-def process_zeikin(gakumen):
-    kyuyoshotoku = calc_kyuyoshotoku(gakumen)
-    print('給与所得   = ', kyuyoshotoku)
-    kintouwari = int(inputlf('今年の1月1日に住民票があった市の均等割額 = '))
-    kenkou_rate = float(inputlf('加入している健康保険組合の保険料率のうち被保険者負担ぶん(x/1000) = '))
+# 配偶者の所得が48万～133万の時の控除(配偶者特別控除)
+def calc_haigushatokubetsukoujo_shotokuzei(kyuyoshotoku_mainworker, kyuyoshotoku_haigusha):
+    if kyuyoshotoku_mainworker <= 9000000:
+        if kyuyoshotoku_haigusha <= 950000:
+            return 380000
+        elif kyuyoshotoku_haigusha <= 1000000:
+            return 360000
+        elif kyuyoshotoku_haigusha <= 1050000:
+            return 310000
+        elif kyuyoshotoku_haigusha <= 1100000:
+            return 260000
+        elif kyuyoshotoku_haigusha <= 1150000:
+            return 210000
+        elif kyuyoshotoku_haigusha <= 1200000:
+            return 160000
+        elif kyuyoshotoku_haigusha <= 1250000:
+            return 110000
+        elif kyuyoshotoku_haigusha <= 1300000:
+            return 60000
+        elif kyuyoshotoku_haigusha <= 1330000:
+            return 30000
+        else:
+            return 0
+    elif kyuyoshotoku_mainworker <= 9500000:
+        if kyuyoshotoku_haigusha <= 950000:
+            return 260000
+        elif kyuyoshotoku_haigusha <= 1000000:
+            return 240000
+        elif kyuyoshotoku_haigusha <= 1050000:
+            return 210000
+        elif kyuyoshotoku_haigusha <= 1100000:
+            return 180000
+        elif kyuyoshotoku_haigusha <= 1150000:
+            return 140000
+        elif kyuyoshotoku_haigusha <= 1200000:
+            return 110000
+        elif kyuyoshotoku_haigusha <= 1250000:
+            return 80000
+        elif kyuyoshotoku_haigusha <= 1300000:
+            return 40000
+        elif kyuyoshotoku_haigusha <= 1330000:
+            return 20000
+        else:
+            return 0
+    elif kyuyoshotoku_mainworker <= 10000000:
+        if kyuyoshotoku_haigusha <= 950000:
+            return 130000
+        elif kyuyoshotoku_haigusha <= 1000000:
+            return 120000
+        elif kyuyoshotoku_haigusha <= 1050000:
+            return 110000
+        elif kyuyoshotoku_haigusha <= 1100000:
+            return 90000
+        elif kyuyoshotoku_haigusha <= 1150000:
+            return 70000
+        elif kyuyoshotoku_haigusha <= 1200000:
+            return 60000
+        elif kyuyoshotoku_haigusha <= 1250000:
+            return 40000
+        elif kyuyoshotoku_haigusha <= 1300000:
+            return 20000
+        elif kyuyoshotoku_haigusha <= 1330000:
+            return 10000
+        else:
+            return 0
+    else:
+        return 0 
+    
+    # 配偶者の所得が48万～133万の時の控除(配偶者特別控除)
+def calc_haigushatokubetsukoujo_juminzei(kyuyoshotoku_mainworker, kyuyoshotoku_haigusha):
+    if kyuyoshotoku_mainworker <= 9000000:
+        if kyuyoshotoku_haigusha <= 1000000:
+            return 330000
+        elif kyuyoshotoku_haigusha <= 1050000:
+            return 310000
+        elif kyuyoshotoku_haigusha <= 1100000:
+            return 260000
+        elif kyuyoshotoku_haigusha <= 1150000:
+            return 210000
+        elif kyuyoshotoku_haigusha <= 1200000:
+            return 160000
+        elif kyuyoshotoku_haigusha <= 1250000:
+            return 110000
+        elif kyuyoshotoku_haigusha <= 1300000:
+            return 60000
+        elif kyuyoshotoku_haigusha <= 1330000:
+            return 30000
+        else:
+            return 0
+    elif kyuyoshotoku_mainworker <= 9500000:
+        if kyuyoshotoku_haigusha <= 1000000:
+            return 220000
+        elif kyuyoshotoku_haigusha <= 1050000:
+            return 210000
+        elif kyuyoshotoku_haigusha <= 1100000:
+            return 180000
+        elif kyuyoshotoku_haigusha <= 1150000:
+            return 140000
+        elif kyuyoshotoku_haigusha <= 1200000:
+            return 110000
+        elif kyuyoshotoku_haigusha <= 1250000:
+            return 80000
+        elif kyuyoshotoku_haigusha <= 1300000:
+            return 40000
+        elif kyuyoshotoku_haigusha <= 1330000:
+            return 20000
+        else:
+            return 0
+    elif kyuyoshotoku_mainworker <= 10000000:
+        if kyuyoshotoku_haigusha <= 1050000:
+            return 110000
+        elif kyuyoshotoku_haigusha <= 1100000:
+            return 90000
+        elif kyuyoshotoku_haigusha <= 1150000:
+            return 70000
+        elif kyuyoshotoku_haigusha <= 1200000:
+            return 60000
+        elif kyuyoshotoku_haigusha <= 1250000:
+            return 40000
+        elif kyuyoshotoku_haigusha <= 1300000:
+            return 20000
+        elif kyuyoshotoku_haigusha <= 1330000:
+            return 10000
+        else:
+            return 0
+    else: # 納税者が所得1000万以上
+        return 0 
 
-    kenkouhoken = calc_kenkouhoken(gakumen, kenkou_rate)
-    koyouhoken = calc_koyouhoken(gakumen)
-    kouseinenkin = calc_kouseinenkin(gakumen)
+# 所得税の配偶者控除
+def calc_haigushakoujo_shotokuzei(kyuyoshotoku_mainworker, kyuyoshotoku_haigusha):
+    if kyuyoshotoku_haigusha <= 480000:
+        if kyuyoshotoku_mainworker <= 9000000:
+            return 380000
+        elif kyuyoshotoku_mainworker <= 9500000:
+            return 260000
+        elif kyuyoshotoku_mainworker <= 10000000:
+            return 130000
+        else:
+            return 0
+    elif kyuyoshotoku_haigusha > 1330000:
+        return 0
+    else: # 配偶者の所得が48万～133万なら
+        return calc_haigushatokubetsukoujo_shotokuzei(kyuyoshotoku_mainworker, kyuyoshotoku_haigusha)
 
-    koujo_shotokuzei = {}
-    koujo_shotokuzei['基礎'] = 480000
-    koujo_shotokuzei['配偶者']   = 0
-    koujo_shotokuzei['扶養']     = 0
-    koujo_shotokuzei['ひとり親'] = 0
-    koujo_shotokuzei['障害者']   = 0
-    koujo_shotokuzei['生命保険'] = 0
-    koujo_shotokuzei['その他']   = 0
-    koujo_shotokuzei['健康保険'] = kenkouhoken
-    koujo_shotokuzei['年金'] = kouseinenkin
-    koujo_shotokuzei['雇用保険'] = koyouhoken
 
-    koujo_juminzei = {}
-    koujo_juminzei['基礎'] = 430000
-    koujo_juminzei['配偶者']   = 0
-    koujo_juminzei['扶養']     = 0
-    koujo_juminzei['ひとり親'] = 0
-    koujo_juminzei['障害者']   = 0
-    koujo_juminzei['生命保険'] = 0
-    koujo_juminzei['その他']   = 0
-    koujo_juminzei['健康保険'] = kenkouhoken
-    koujo_juminzei['年金'] = kouseinenkin
-    koujo_juminzei['雇用保険'] = koyouhoken
-    koujo_juminzei['調整'] = 0
+def calc_haigushakoujo_juminzei(kyuyoshotoku_mainworker, kyuyoshotoku_haigusha):
+    if kyuyoshotoku_haigusha <= 480000:
+        if kyuyoshotoku_mainworker <= 9000000:
+            return 330000
+        elif kyuyoshotoku_mainworker <= 9500000:
+            return 220000
+        elif kyuyoshotoku_mainworker <= 10000000:
+            return 110000
+        else:
+            return 0
+    elif kyuyoshotoku_haigusha > 1330000:
+        return 0
+    else: # 配偶者の所得が48万～133万なら
+        return calc_haigushatokubetsukoujo_juminzei(kyuyoshotoku_mainworker, kyuyoshotoku_haigusha)
 
-    shotokuzei = calc_shotokuzei(kyuyoshotoku, koujo_shotokuzei)
-    juminzei = calc_juminzei(kyuyoshotoku, koujo_juminzei, kintouwari)
 
-    #print_yellow("健康保険料", kenkouhoken)
-    #print_yellow("雇用保険料", koyouhoken)
-    #print_yellow("厚生年金料", kouseinenkin)
-
-    print('~~~~~~~~~~~~所得税の控除内訳~~~~~~~~~~~~')
-    sum_koujo_shotoku = 0
-    for k in koujo_shotokuzei:
-        sum_koujo_shotoku += koujo_shotokuzei[k]
-        print_tagstr_format(k + '控除', koujo_shotokuzei[k])
-    print_tagstr_format("   -> 控除額合計", sum_koujo_shotoku)
-    print_tagstr_format("   -> 課税所得", calc_kazeishotoku_shotokuzei(kyuyoshotoku, koujo_shotokuzei))
-    print('~~~~~~~~~~~~住民税の控除内訳~~~~~~~~~~~~')
-    sum_koujo_jumin = 0
-    for k in koujo_shotokuzei:
-        sum_koujo_jumin += koujo_juminzei[k]
-        print_tagstr_format(k + '控除', koujo_juminzei[k])
-    print_tagstr_format("   -> 控除額合計", sum_koujo_jumin)
-    print_tagstr_format("   -> 課税標準額", calc_kazeishotoku_juminzei(kyuyoshotoku, koujo_juminzei))
-    print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
-    print_yellow("所得税", shotokuzei)
-    print_yellow("住民税", juminzei)
-    print_yellow("健康保険料", kenkouhoken)
-    print_yellow("雇用保険料", koyouhoken)
-    print_yellow("厚生年金保険料", kouseinenkin)
-    sum_minus = shotokuzei + juminzei + kenkouhoken + koyouhoken + kouseinenkin
-    print_red("   -> 税金社保合計", sum_minus)
-    print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
-    tedori = gakumen - sum_minus
-    print_tagstr_format("年収(額面)", gakumen)
-    print_red("引かれる額合計", sum_minus)
-    print_red("手取り", tedori)
 
 def replace_space_to_nbsp(str):
     out_str = ''
@@ -250,7 +342,7 @@ def html_formatted_line(str, val):
 def html_formatted_line_str(str):
     return wrap_html_p(wrap_htmp_tt(replace_space_to_nbsp(str)))
 
-def generate_tedori_result_str(gakumen, kenkou_rate, kintouwari):
+def generate_tedori_result_str(gakumen, kenkou_rate, kintouwari, has_haigusha, gakumen_haigusha):
     out_str = ''
 
     kenkouhoken = calc_kenkouhoken(gakumen, kenkou_rate)
@@ -260,7 +352,7 @@ def generate_tedori_result_str(gakumen, kenkou_rate, kintouwari):
 
     koujo_shotokuzei = {}
     koujo_shotokuzei['基礎'] = 480000
-    koujo_shotokuzei['配偶者']   = 0
+    koujo_shotokuzei['配偶者']   = calc_haigushakoujo_shotokuzei(kyuyoshotoku, calc_kyuyoshotoku(gakumen_haigusha)) if has_haigusha else 0
     koujo_shotokuzei['扶養']     = 0
     koujo_shotokuzei['ひとり親'] = 0
     koujo_shotokuzei['障害者']   = 0
@@ -272,7 +364,7 @@ def generate_tedori_result_str(gakumen, kenkou_rate, kintouwari):
 
     koujo_juminzei = {}
     koujo_juminzei['基礎'] = 430000
-    koujo_juminzei['配偶者']   = 0
+    koujo_juminzei['配偶者']   = calc_haigushakoujo_juminzei(kyuyoshotoku, calc_kyuyoshotoku(gakumen_haigusha)) if has_haigusha else 0
     koujo_juminzei['扶養']     = 0
     koujo_juminzei['ひとり親'] = 0
     koujo_juminzei['障害者']   = 0
@@ -280,8 +372,7 @@ def generate_tedori_result_str(gakumen, kenkou_rate, kintouwari):
     koujo_juminzei['その他']   = 0
     koujo_juminzei['健康保険'] = kenkouhoken
     koujo_juminzei['年金'] = kouseinenkin
-    koujo_juminzei['雇用保険'] = koyouhoken
-    
+    koujo_juminzei['雇用保険'] = koyouhoken 
     koujo_juminzei['調整'] = int(calc_chouseikoujo(kyuyoshotoku, koujo_shotokuzei, koujo_juminzei))
 
     shotokuzei = calc_shotokuzei(kyuyoshotoku, koujo_shotokuzei)
