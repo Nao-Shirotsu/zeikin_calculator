@@ -2,8 +2,11 @@
 <html>
   <head>
     <title>手取り計算 v0.1</title>
+
+    <!-- include -->
     <script type="text/javascript" src="{{ url_for('static', filename='show_by_id.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='hide_by_id.js') }}"></script>
+
   </head>
   <body>
     <h1>手取り計算 v0.1</h1>
@@ -81,6 +84,18 @@
       </fieldset>
       <br>
       <input type="submit" value="計算結果を表示" />
+
+      <!-- post時にもフォームの内容がテキストボックスに残るようにする -->
+      {% if form_dict %}
+        {% for key in form_dict %}
+          <script type="text/javascript">
+            element = document.getElementById('{{key}}');
+            if(element){
+              element.value = '{{form_dict[key]}}'; 
+            }
+          </script>
+        {% endfor %}
+      {% endif %}
     </form>
   </body>
 </html>

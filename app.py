@@ -14,6 +14,6 @@ def index():
         gakumen_haigusha = 0
         if has_haigusha:
             gakumen_haigusha = int(request.form['haigusha_gakumen'])
-        return render_template("index.html", gakumen=gakumen, kenkou_rate=kenkou_rate, kintouwari=kintouwari, gakumen_haigusha=gakumen_haigusha) + tedori_calc.generate_tedori_result_str(gakumen, kenkou_rate, kintouwari, bool(has_haigusha), gakumen_haigusha)
+        return render_template("index.html", form_dict=request.form) + tedori_calc.generate_tedori_result_str(gakumen, kenkou_rate, kintouwari, bool(has_haigusha), gakumen_haigusha)
     else: # GET
         return render_template("index.html")
