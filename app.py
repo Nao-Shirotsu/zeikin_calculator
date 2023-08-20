@@ -17,3 +17,6 @@ def index():
         return render_template("index.html", gakumen=gakumen, kenkou_rate=kenkou_rate, kintouwari=kintouwari, gakumen_haigusha=gakumen_haigusha) + tedori_calc.generate_tedori_result_str(gakumen, kenkou_rate, kintouwari, bool(has_haigusha), gakumen_haigusha)
     else: # GET
         return render_template("index.html")
+
+if __name__ == "__main__":
+    app.run(debug=True)
