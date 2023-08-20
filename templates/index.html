@@ -13,14 +13,14 @@
     <form action="" method="post">
       <fieldset>
         <legend>額面(年収)</legend>
-        <div class="tedori_param">
+        <div>
           <label for="gakumen">額面(年収) : </label>
           <input type="text" name="gakumen" id="gakumen" required/>
         </div>
       </fieldset>
       <fieldset>
         <legend>今年の1月1日に住民票があった市の均等割額</legend>
-        <div class="tedori_param">
+        <div>
           <label for="kintouwari">均等割額 : </label>
           <input type="text" name="kintouwari" id="kintouwari" required/>
         </div>
@@ -31,11 +31,11 @@
         <div>
           自分が加入している健康保険組合の保険料率を調べ、x/1000のxの部分を入力してください。
         </div>
-        <div class="tedori_param">
+        <div>
           <label for="kenkou_rate">一般(‰) : </label>
           <input type="text" name="kenkou_rate_ippan" id="kenkou_rate_ippan" required/>
         </div>
-        <div class="tedori_param"></div>
+        <div>
           <label for="kenkou_rate">介護(‰) : </label>
           <input type="text" name="kenkou_rate_kaigo" id="kenkou_rate_kaigo" required/>
         </div>
@@ -79,9 +79,8 @@
         </div>
 
       </fieldset>
-      <div class="tedori_param">
-        <input type="submit" value="計算" />
-      </div>
+      <br>
+      <input type="submit" value="計算結果を表示" />
     </form>
   </body>
 </html>
