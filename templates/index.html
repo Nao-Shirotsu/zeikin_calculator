@@ -2,6 +2,8 @@
 <html>
   <head>
     <title>手取り計算 v0.1</title>
+    <script type="text/javascript" src="{{ url_for('static', filename='show_by_id.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='hide_by_id.js') }}"></script>
   </head>
   <body>
     <h1>手取り計算 v0.1</h1>
@@ -51,7 +53,7 @@
           <input type="radio" id="haigusha_choice1" name="haigusha" value="yes" required/>
           <label for="haigusha_choice1">います</label>
 
-          <input type="radio" id="haigusha_choice2" name="haigusha" value="no" />
+          <input type="radio" id="haigusha_choice2" name="haigusha" value="no" checked/>
           <label for="haigusha_choice2">いません</label>
         </div>
         <div class="tedori_param">
@@ -62,9 +64,6 @@
 
       <fieldset>
         <legend>扶養控除</legend>
-        <script type="text/javascript" src="{{ url_for('static', filename='show_by_id.js') }}"></script>
-        <script type="text/javascript" src="{{ url_for('static', filename='hide_by_id.js') }}"></script>
-
         <div>
           扶養親族がいますか？
         </div>
@@ -72,10 +71,10 @@
           <input type="radio" id="fuyoushinzoku_choice1" onclick="show_by_id('mytest')" name="fuyoushinzoku" value="yes" required/>
           <label for="fuyoushinzoku_choice1">います</label>
 
-          <input type="radio" id="fuyoushinzoku_choice2" onclick="hide_by_id('mytest')" name="fuyoushinzoku" value="no" />
+          <input type="radio" id="fuyoushinzoku_choice2" onclick="hide_by_id('mytest')" name="fuyoushinzoku" value="no" checked/>
           <label for="fuyoushinzoku_choice2">いません</label>
         </div>
-        <div id="mytest">
+        <div id="mytest" style="display: none;">
           abcde
         </div>
 
